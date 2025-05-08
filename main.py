@@ -4,7 +4,7 @@ import easyocr
 import matplotlib.pyplot as plt
 
 # Charges the image to analyze
-image_path = input("Enter image filename bills_case_1.jpg or bills_case_2.jpg: ")
+image_path = input("Enter image filename bills_case_1.jpg or bills_case_2.jpg or bills_total.jpg: ")
 image = cv2.imread(image_path)
 
 image = cv2.imread("bills_total.jpg")
