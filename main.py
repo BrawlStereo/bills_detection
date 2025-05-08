@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import easyocr
+import matplotlib.pyplot as plt
 
 # Charges the image to analyze
 image = cv2.imread("bills_total.jpg")
@@ -96,7 +97,17 @@ for i, contour in enumerate(contours):
             (255, 0, 0),                #blue color
             2                           #font width
         )
-
-   
     
+    # Show in console the total amount of money in the image
+    print("\nTotal calculations:")
+    for v, c in sorted(number_bills_counter.items()):
+        print(f"${v} x {c} = ${v*c}")
+    print(f"TOTAL: ${total}")
 
+    # Show resulting image in another window and saves a new image file with the result
+    cv2.imwrite("result.jpg", image)
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    plt.imshow(image_rgb)
+    plt.title("Result")
+    plt.axis('off')
+    plt.show()
