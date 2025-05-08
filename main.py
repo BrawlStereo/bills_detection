@@ -56,22 +56,20 @@ for i, contour in enumerate(contours):
         continue
 
     # Cuts the image of the bill from the unmodified image
-    x, y, w, h = cv2.boundingRect(contour)      #gets contour dimensions, x is initial position in x, y is the initial position in y,
+    x, y, w, h = cv2.boundingRect(contour)  #gets contour dimensions, x is initial position in x, y is the initial position in y,
                                             #w the bill width and h the bill height
-    bill = image_original[y:y+h, x:x+w]  #gets the portion of the image since line y until y+h and since column x until x+w
+    bill = image_original[y:y+h, x:x+w]     #gets the portion of the image since line y until y+h and since column x until x+w
 
     # Applies gussian blur to eliminate small details that ocr could detect
     bill_blurred = cv2.GaussianBlur(bill, (5, 5), 0)
 
     # Apply OCR
     results = reader.readtext(bill_blurred)
-    #print(f"OCR en bill {i+1} (con blur):")
 
     detected_value = None #bill's value detected by ocr
 
     # Look if the text detected by ocr is a valid bill value
     for _, text, _ in results:
-        #text = text.replace("$", "").replace(",", "").strip()     #deletes possible unnecesary symbols detected
         print("→ Detected:", text)
         text = text.lower().replace("o", "0").replace("s", "5").replace("l", "1") #replaces posibble confussions between a char and int
         for possible_value in [1000, 500, 200, 100, 50, 20]:
@@ -80,6 +78,25 @@ for i, contour in enumerate(contours):
                 break
         if detected_value:
             break
+    # If a value was detected, updates the accumulated money and modify the image visually
+    if detected_value:
+
+        # Updates bill's quantity and total money
+        number_bills_counter[detected_value] = number_bills_counter.get(detected_value, 0) + 1 #Adds 1 to the value under the key with the bill value
+        total += detected_value
+
+        # Draws a green contour and the bills quantity in the image to show
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.putText(
+            image, 
+            f"${detected_value}", 
+            (x, y - 10),                #puts quantity above the bill
+            cv2.FONT_HERSHEY_SIMPLEX, 
+            1,                          #font size
+            (255, 0, 0),                #blue color
+            2                           #font width
+        )
+
    
     
 
