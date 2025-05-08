@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 image_path = input("Enter image filename bills_case_1.jpg or bills_case_2.jpg or bills_total.jpg: ")
 image = cv2.imread(image_path)
 
-image = cv2.imread("bills_total.jpg")
 if image is None:
     print("Image not found")
     exit()
@@ -101,16 +100,16 @@ for i, contour in enumerate(contours):
             2                           #font width
         )
     
-    # Show in console the total amount of money in the image
-    print("\nTotal calculations:")
-    for v, c in sorted(number_bills_counter.items()):
-        print(f"${v} x {c} = ${v*c}")
-    print(f"TOTAL: ${total}")
+# Show in console the total amount of money in the image
+print("\nTotal calculations:")
+for v, c in sorted(number_bills_counter.items()):
+    print(f"${v} x {c} = ${v*c}")
+print(f"TOTAL: ${total}")
 
-    # Show resulting image in another window and saves a new image file with the result
-    cv2.imwrite("result.jpg", image)
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    plt.imshow(image_rgb)
-    plt.title("Result")
-    plt.axis('off')
-    plt.show()
+# Show resulting image in another window and saves a new image file with the result
+cv2.imwrite("result.jpg", image)
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+plt.imshow(image_rgb)
+plt.title("Result")
+plt.axis('off')
+plt.show()
